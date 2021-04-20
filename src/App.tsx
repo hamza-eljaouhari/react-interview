@@ -18,14 +18,11 @@ function App(props: any) {
           target="_blank"
           rel="noreferrer"
         >
-          Mon profil github
+          Movies
         </a>
       </header>
       <Router>
         <main>
-          <Route path="/">
-            <Redirect to="/movies/1" />
-          </Route>
           <Route path="/movies/:pageNumber">
             <Movies></Movies>
           </Route>

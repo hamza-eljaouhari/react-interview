@@ -1,12 +1,17 @@
-function Card(){
+import MovieType from "../types/movie";
+
+function Card(props: MovieType){
+    const { id, title, category, likes, dislikes } = props;
+
     return (
-        <ul>
-            <li>a</li>
-            <li>b</li>
-            <li>e</li>
-            <li>d</li>
-            <li>c</li>
-        </ul>
+        <article className="movie-card">
+            <header>
+                <strong>
+                    { title }
+                </strong>
+                {id}
+            </header>
+        </article>
     )
 }
 

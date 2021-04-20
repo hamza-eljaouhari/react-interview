@@ -2,3 +2,28 @@ body, html, #root{
   height: 100%;
   width: 100%;
 }
+
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background-color:#F5F5F5;
+}
+
+.App-header{
+  height: 80px;
+  width: 100%;
+  background-color: #2F4F4F;
+  line-height: 80px;
+  padding-left: 20px;
+}
+
+.App-header a{
+  color: white;
+  font-weight: bold
+}
