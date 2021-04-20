@@ -18,7 +18,6 @@ function App(props: any) {
         <a
           href="https://github.com/hamza-eljaouhari"
           target="_blank"
-          rel="noopener noreferrer"
         >
           Mon profil github
         </a>
