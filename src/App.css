@@ -27,3 +27,7 @@ body {
   color: white;
   font-weight: bold
 }
+
+main {
+  padding: 50px 100px;
+}

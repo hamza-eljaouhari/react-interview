@@ -1,0 +1,17 @@
+.movie-card{
+    width: 200px;
+    background-color: #DCDCDC;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.movie-category{
+    margin: 10px 0;
+    padding: 10px;
+    background-color: burlywood;
+    border-radius: 5px;
+}
+
+hr {
+    margin: 20px 0;
+}

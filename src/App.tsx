@@ -1,7 +1,8 @@
 import {
   BrowserRouter as Router,
   Route,
-  Redirect
+  Redirect,
+  Link
 } from "react-router-dom";
 
 import './App.css';
@@ -12,16 +13,12 @@ function App(props: any) {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <a
-          href="https://github.com/hamza-eljaouhari"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Movies
-        </a>
-      </header>
       <Router>
+        <header className="App-header">
+          <Link to="/movies/1">
+            Movies
+          </Link>
+        </header>
         <main>
           <Route path="/movies/:pageNumber">
             <Movies></Movies>

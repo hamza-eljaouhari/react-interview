@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import moviesApi from "../movies";
 import Card from "./Card";
 import MovieType from "../types/movie";
+import "./List.css";
 
 import {
     withRouter
@@ -27,7 +28,7 @@ function Movies(props: any){
     }
 
     return (
-        <section>
+        <section className="movies-list">
             {
                 paginateMovies().map((movie: MovieType) => {
                     return <Card 
