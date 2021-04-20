@@ -1,0 +1,3 @@
+export const SET_MOVIES = "SET_MOVIES";
+export const SET_MOVIES_CATEGORIES = "SET_MOVIES_CATEGORIES";
+  
