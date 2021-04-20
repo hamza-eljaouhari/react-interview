@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import {
   BrowserRouter as Router,
   Route,
@@ -18,6 +16,7 @@ function App(props: any) {
         <a
           href="https://github.com/hamza-eljaouhari"
           target="_blank"
+          rel="noreferrer"
         >
           Mon profil github
         </a>
