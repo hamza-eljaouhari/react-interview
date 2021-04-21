@@ -2,7 +2,6 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin: 0 30px;
 }
 
 .categories-dropdown{
@@ -11,9 +10,10 @@
 
 .selected-categories-tags{
     border: 1px solid rgba(0, 0, 0, 0.7);
-    padding: 15px 50px 15px 15px; 
     min-width: 250px;
-    
+    height:48px;
+    margin-right: 48px;
+    line-height: 48px;
 }
 
 .category-tag{
@@ -25,11 +25,16 @@
 .arrow-dropdown{
     float: right;
     background: rgba(0, 0, 0, 0.1);
-    border-left: 1px solid  rgba(0, 0, 0, 0.7);
+    border: 1px solid  rgba(0, 0, 0, 0.7);
+    border-left: none;
     position: absolute;
     top: 0;
     right:0;
-    padding: 14px;
+    height: 48px;
+    width: 48px;
+    text-align: center;
+    line-height: 48px;
+    margin-left: 78px;
 }
 
 .categories-list{

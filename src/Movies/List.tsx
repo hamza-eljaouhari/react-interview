@@ -52,8 +52,6 @@ function Movies(props: any){
             }
         })
 
-        console.log(uniqueCategories)
-
         props.setCategories(uniqueCategories);
     }
     
@@ -90,7 +88,7 @@ function Movies(props: any){
 
         const { pageNumber } = props.match.params;
 
-        if(props.movies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE && parseInt(pageNumber) !== 1){
+        if(props.filteredMovies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE && parseInt(pageNumber) !== 1){
             props.history.push("/movies/" + (parseInt(pageNumber) - 1));
         }
     }
@@ -225,12 +223,21 @@ function Movies(props: any){
 }
 
 const mapStateToProps = (state: any) => {
+
+    var uniqueCategories: any = [];
+
+    state.moviesReducer.movies.forEach((movie: MovieType) => {
+        if(!uniqueCategories.includes(movie.category)){
+            uniqueCategories.push(movie.category)
+        }
+    })
+
     return {
         filteredMovies: state.moviesReducer.movies.filter((m: MovieType) => {
             return state.moviesReducer.filters.includes("All") || state.moviesReducer.filters.includes(m.category);
         }),
         movies: state.moviesReducer.movies,
-        categories: state.moviesReducer.categories,
+        categories: uniqueCategories,
         filters: state.moviesReducer.filters
     }
 }

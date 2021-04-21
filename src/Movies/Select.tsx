@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { setCategoryFilters } from "../redux/reducers/movies/actions";
 import { MdArrowDropDown } from 'react-icons/md';
 
+import MovieType from "../types/movie";
+
 import "./Select.css";
 
 function Select(props: any){
@@ -38,7 +40,7 @@ function Select(props: any){
                 <div onClick={showOptions} className="selected-categories-tags">
                     {
                         filters.map((filter: string) => {
-                            return <span className="category-tag" style={{backgroundColor: colorArray[categories.indexOf(filter)]}}>{filter}</span>
+                            return <span key={filter} className="category-tag" style={{backgroundColor: colorArray[categories.indexOf(filter)]}}>{filter}</span>
                         })
                     }
                     <span className="arrow-dropdown">
@@ -69,7 +71,9 @@ function Select(props: any){
 
 const mapStateToProps = (state: any) => {
     return {
-        filters: state.moviesReducer.filters,
+        filters: state.moviesReducer.filters.filter((filter: string) => {
+            return state.moviesReducer.categories.includes(filter);
+        }) || ["All"],
         categories: state.moviesReducer.categories
     }
 }
