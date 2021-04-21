@@ -41,6 +41,46 @@ function Movies(props: any){
             alert("There was an error fetching the data from the server. Please try again in a while.")
         })
     }, []);
+    
+    function like(id: string): void{
+        var newMovies = movies.map((movie: MovieType) => {
+            if(movie.id === id){
+                movie.likes++;
+            }
+
+            return movie
+        })
+
+        setMovies(newMovies);
+    }
+
+    function dislike(id: string): void{
+        var newMovies = movies.map((movie: MovieType) => {
+            if(movie.id === id){
+                movie.dislikes++;
+            }
+
+            return movie;
+        })
+
+        setMovies(newMovies);
+    }
+
+    function deleteItem(id: string): void{
+        const newMovies = movies.filter((movie: MovieType) => {
+            return movie.id !== id;
+        });
+
+        setMovies(newMovies);
+
+        const { pageNumber } = props.match.params;
+
+        console.log("length", movies.length)
+        console.log("page number", parseInt(pageNumber))
+        if(movies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE){
+            props.history.push("/movies/" + (parseInt(pageNumber) - 1));
+        }
+    }
 
     function paginateMovies() : MovieType[] {
         const { pageNumber } = props.match.params;
@@ -50,7 +90,6 @@ function Movies(props: any){
 
     function hasPreviousPage() : boolean {
         const { pageNumber } = props.match.params;
-        console.log("haprev", parseInt(pageNumber) === 1)
         if(parseInt(pageNumber) === 1){
             return false;
         }
@@ -60,8 +99,6 @@ function Movies(props: any){
 
     function hasNextPage() : boolean {
         const { pageNumber } = props.match.params;
-        console.log("parseInt(pageNumber) * DEFAULT_PER_PAGE",parseInt(pageNumber) * DEFAULT_PER_PAGE);
-        console.log("movies.length", movies.length)
         if(parseInt(pageNumber) * DEFAULT_PER_PAGE < movies.length){
             return true;
         }
@@ -98,6 +135,9 @@ function Movies(props: any){
                             categoryColor={colorArray[moviesCategories.indexOf(movie.category)]}
                             likes={movie.likes}
                             dislikes={movie.dislikes}
+                            deleteItem={deleteItem}
+                            like={like}
+                            dislike={dislike}
                         ></Card>
                     })
                 }

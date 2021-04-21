@@ -39,4 +39,9 @@ hr {
 .movie-dislikes, .movie-likes{
     display: table-cell;    
     font-size: 12px;
+    cursor: pointer;
+}
+
+.delete-button{
+    float: right;
 }

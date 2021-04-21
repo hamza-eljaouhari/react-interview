@@ -12,7 +12,7 @@ function Select(props: any){
                 <select name="categories" id="categories" multiple>
                     {
                         props.categories.map((category: string) => {
-                            return <option value={category}>{ category }</option>
+                            return <option key={category} value={category}>{ category }</option>
                         })
                     }
                 </select>
