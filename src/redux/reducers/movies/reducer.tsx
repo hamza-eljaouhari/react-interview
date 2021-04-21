@@ -10,7 +10,7 @@ const moviesReducer = (state = {
         ...state,
         movies: action.payload.movies
       };
-    case 'SET_MOVIES_CATGORIES':
+    case 'SET_MOVIES_CATEGORIES':
       return {
         ...state,
         categories: action.payload.categories

@@ -8,8 +8,10 @@ import {
     withRouter
 } from "react-router-dom";
 
+import { connect } from 'react-redux'
+
 import "./List.css";
-import { setMoviesCategories } from "../redux/reducers/movies/actions";
+import { setMoviesCategories, setMovies} from "../redux/reducers/movies/actions";
 
 const DEFAULT_PER_PAGE = 4;
 
@@ -17,33 +19,41 @@ const DEFAULT_PER_PAGE = 4;
 var colorArray = ['#EF5350', '#EC407A', '#AB47BC', '#673AB7', '#00B3E6', 
 		  '#2196F3', '#00796B', '#4CAF50', '#CDDC39', '#3F51B5'];
 
-
 function Movies(props: any){
-
-    const [movies, setMovies] = useState<any>([])
-    const [moviesCategories, setMoviesCategories] = useState<any>([])
 
     useEffect(() => {
         moviesApi.then((response: any) => {
 
-            var uniqueCategories: any = [];
+            
 
-            response.forEach((movie: MovieType) => {
-                if(!uniqueCategories.includes(movie.category)){
-                    uniqueCategories.push(movie.category)
-                }
-            })
-
-            setMoviesCategories(uniqueCategories);
-            setMovies(response);
+            setUniqueMoviesCategories(response);
+            props.setMovies(response);
 
         }).catch((error) => {
             alert("There was an error fetching the data from the server. Please try again in a while.")
         })
     }, []);
+
+    useEffect(() => {
+        setUniqueMoviesCategories(props.movies)
+    }, [props.movies])
+
+    function setUniqueMoviesCategories(movies: any): void{
+        var uniqueCategories: any = [];
+
+        movies.forEach((movie: MovieType) => {
+            if(!uniqueCategories.includes(movie.category)){
+                uniqueCategories.push(movie.category)
+            }
+        })
+
+        console.log(uniqueCategories)
+
+        props.setCategories(uniqueCategories);
+    }
     
     function like(id: string): void{
-        var newMovies = movies.map((movie: MovieType) => {
+        var newMovies = props.movies.map((movie: MovieType) => {
             if(movie.id === id){
                 movie.likes++;
             }
@@ -51,11 +61,11 @@ function Movies(props: any){
             return movie
         })
 
-        setMovies(newMovies);
+        props.setMovies(newMovies);
     }
 
     function dislike(id: string): void{
-        var newMovies = movies.map((movie: MovieType) => {
+        var newMovies = props.movies.map((movie: MovieType) => {
             if(movie.id === id){
                 movie.dislikes++;
             }
@@ -63,33 +73,40 @@ function Movies(props: any){
             return movie;
         })
 
-        setMovies(newMovies);
+        props.setMovies(newMovies);
     }
 
     function deleteItem(id: string): void{
-        const newMovies = movies.filter((movie: MovieType) => {
+        const newMovies = props.movies.filter((movie: MovieType) => {
             return movie.id !== id;
         });
 
-        setMovies(newMovies);
+        props.setMovies(newMovies);
 
         const { pageNumber } = props.match.params;
 
-        console.log("length", movies.length)
-        console.log("page number", parseInt(pageNumber))
-        if(movies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE){
+        if(props.movies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE){
             props.history.push("/movies/" + (parseInt(pageNumber) - 1));
         }
+        console.log(props.categories)
     }
 
     function paginateMovies() : MovieType[] {
         const { pageNumber } = props.match.params;
-        var moviesPage = [...movies]
+
+        var moviesPage = [...props.movies]
+        
         return moviesPage.splice(DEFAULT_PER_PAGE * (parseInt(pageNumber)  - 1), DEFAULT_PER_PAGE)
     }
 
     function hasPreviousPage() : boolean {
+
+        if(props.movies.length < DEFAULT_PER_PAGE){
+            return false;
+        }
+
         const { pageNumber } = props.match.params;
+
         if(parseInt(pageNumber) === 1){
             return false;
         }
@@ -98,8 +115,13 @@ function Movies(props: any){
     }
 
     function hasNextPage() : boolean {
+        if(props.movies.length < DEFAULT_PER_PAGE){
+            return false;
+        }
+
         const { pageNumber } = props.match.params;
-        if(parseInt(pageNumber) * DEFAULT_PER_PAGE < movies.length){
+        
+        if(parseInt(pageNumber) * DEFAULT_PER_PAGE < props.movies.length){
             return true;
         }
 
@@ -122,7 +144,7 @@ function Movies(props: any){
     return (
         <>
             <div className="multi-select-container">
-                <Select categories={moviesCategories }></Select>
+                <Select categories={props.categories}></Select>
             </div>
             <section className="movies-list">
                 {
@@ -132,7 +154,7 @@ function Movies(props: any){
                             id={movie.id}
                             title={movie.title}
                             category={movie.category}
-                            categoryColor={colorArray[moviesCategories.indexOf(movie.category)]}
+                            categoryColor={colorArray[props.categories.indexOf(movie.category)]}
                             likes={movie.likes}
                             dislikes={movie.dislikes}
                             deleteItem={deleteItem}
@@ -160,4 +182,18 @@ function Movies(props: any){
     )
 }
 
-export default withRouter(Movies);
+const mapStateToProps = (state: any) => {
+    return {
+        movies: state.moviesReducer.movies,
+        categories: state.moviesReducer.categories
+    }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setMovies: (movies: MovieType[]) => dispatch(setMovies(movies)),
+        setCategories: (categories: string[]) => dispatch(setMoviesCategories(categories))
+    }   
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Movies));
