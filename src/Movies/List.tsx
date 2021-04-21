@@ -84,10 +84,9 @@ function Movies(props: any){
 
         const { pageNumber } = props.match.params;
 
-        if(props.movies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE){
+        if(props.movies.length - 1 <= (parseInt(pageNumber) - 1) * DEFAULT_PER_PAGE && parseInt(pageNumber) !== 1){
             props.history.push("/movies/" + (parseInt(pageNumber) - 1));
         }
-        console.log(props.categories)
     }
 
     function paginateMovies() : MovieType[] {
@@ -122,7 +121,7 @@ function Movies(props: any){
 
         const { pageNumber } = props.match.params;
         
-        if(parseInt(pageNumber) * DEFAULT_PER_PAGE < props.movies.length){
+        if(parseInt(pageNumber) * DEFAULT_PER_PAGE < props.filteredMovies.length){
             return true;
         }
 
