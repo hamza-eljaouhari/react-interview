@@ -83,13 +83,13 @@ function Movies(props: any){
             <nav className="navigation-buttons">
                 {
                     hasPreviousPage() &&
-                    <Link to={previousPagePath()} style={{float: "left", margin: "30px"}}>
+                    <Link to={previousPagePath()} className="navigation-button" style={{float: "left", margin: "30px"}}>
                         Previous
                     </Link>
                 }
                 {
                     hasNextPage() &&
-                    <Link to={nextPagePath()} style={{float: "right", margin: "30px"}}>
+                    <Link to={nextPagePath()} className="navigation-button" style={{float: "right", margin: "30px"}}>
                         Next
                     </Link>
                 }
