@@ -3,6 +3,8 @@
     background-color: #DCDCDC;
     border-radius: 5px;
     padding: 15px;
+    margin-top: 20px;
+    margin-right: 20px;
 }
 
 .movie-category{
@@ -14,4 +16,24 @@
 
 hr {
     margin: 20px 0;
+}
+
+.movie-votes{
+    width: 100%;
+    display: table;
+}
+
+
+.movie-likes{
+    text-align: right;
+}
+
+
+.movie-dislikes{
+    text-align: left;
+}
+
+.movie-dislikes, .movie-likes{
+    display: table-cell;    
+    font-size: 12px;
 }

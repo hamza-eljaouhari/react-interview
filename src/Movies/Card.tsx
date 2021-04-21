@@ -1,6 +1,11 @@
 import MovieType from "../types/movie";
 import "./Card.css";
 
+import { MdThumbUp } from 'react-icons/md';
+import { MdThumbDown } from 'react-icons/md';
+
+const iconSize = 16;
+
 function Card(props: MovieType){
     const { id, title, category, likes, dislikes } = props;
 
@@ -19,8 +24,14 @@ function Card(props: MovieType){
             <hr/>
 
             <div className="movie-votes">
-                <span className="movie-dislikes">Dislikes ({dislikes})</span>
-                <span className="movie-likes">Likes ({likes})</span>
+                <span className="movie-dislikes">
+                    <MdThumbDown size={iconSize}/>
+                    ({dislikes})
+                </span>
+                <span className="movie-likes">
+                    <MdThumbUp size={iconSize}/>
+                    ({likes})
+                </span>
             </div>
         </article>
     )
