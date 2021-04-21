@@ -11,13 +11,12 @@ import {
 import { connect } from 'react-redux'
 
 import "./List.css";
-import { setMoviesCategories, setMovies, setCategoryFilter} from "../redux/reducers/movies/actions";
+import { setMoviesCategories, setMovies, setCategoryFilters } from "../redux/reducers/movies/actions";
 import movies from "../movies";
+import { colorArray } from "../utils/colorArray";
 
 const DEFAULT_PER_PAGE = 4;
 
-var colorArray = ['#EF5350', '#EC407A', '#AB47BC', '#673AB7', '#00B3E6', 
-		  '#2196F3', '#00796B', '#4CAF50', '#CDDC39', '#3F51B5'];
 
 function Movies(props: any){
 
@@ -36,6 +35,13 @@ function Movies(props: any){
     useEffect(() => {
         setUniqueMoviesCategories(props.movies)
     }, [props.movies])
+
+    useEffect(() => {
+        if(!props.filters.length){
+            props.setCategoryFilters(["All"]);
+        }
+    }, [props.filters])
+
 
     function setUniqueMoviesCategories(movies: any): void{
         var uniqueCategories: any = [];
@@ -144,13 +150,19 @@ function Movies(props: any){
     function getMultiSelectCategories(){
         if(props.movies.length){
             return (
-                <div className="multi-select-container">
-                    <Select 
-                        categories={props.categories}
-                        selectFilters={selectFilters}
-                        ></Select>
-                </div>
+                <Select
+                    resetPagination={resetPagination}
+                ></Select>
             );
+        }
+    }
+
+    function resetPagination(){
+        
+        const {pageNumber} = props.match.params;
+
+        if(parseInt(pageNumber) !== 1){
+            props.history.push("/movies/1");
         }
     }
 
@@ -158,29 +170,10 @@ function Movies(props: any){
         if(!props.movies.length && !isLoading){
             return(
                 <h4>
-                    The demonstration has finished, hope you like it.
+                    The demonstration has finished, I hope you liked it.
                 </h4>
             )
         }
-    }
-
-    function selectFilters(event: React.ChangeEvent<HTMLSelectElement>){
-        var selected = []
-        const options = event.currentTarget.options
-         
-        for(let i = 0; i < options.length; i++){
-            if(options[i].selected){
-                selected.push(options[i].innerText);
-            }
-        }
-
-        const {pageNumber} = props.match.params;
-
-        if(parseInt(pageNumber) !== 1){
-            props.history.push("/movies/1");
-        }
-
-        props.setFilters(selected)
     }
 
     return (
@@ -246,7 +239,7 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setMovies: (movies: MovieType[]) => dispatch(setMovies(movies)),
         setCategories: (categories: string[]) => dispatch(setMoviesCategories(categories)),
-        setFilters: (filters: string[]) => dispatch(setCategoryFilter(filters))
+        setCategoryFilters: (filters: string[]) => dispatch(setCategoryFilters(filters))
     }   
 }
 

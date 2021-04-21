@@ -17,7 +17,7 @@ export const setMoviesCategories = (categories: string[]) => ({
     payload: { categories }
 });
 
-export const setCategoryFilter = (filters: string[]) => ({
+export const setCategoryFilters = (filters: string[]) => ({
     type: SET_CATEGORY_FILTERS,
     payload: { filters }
 });
