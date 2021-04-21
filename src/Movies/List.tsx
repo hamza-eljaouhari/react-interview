@@ -12,23 +12,22 @@ import { connect } from 'react-redux'
 
 import "./List.css";
 import { setMoviesCategories, setMovies} from "../redux/reducers/movies/actions";
+import movies from "../movies";
 
 const DEFAULT_PER_PAGE = 4;
-
 
 var colorArray = ['#EF5350', '#EC407A', '#AB47BC', '#673AB7', '#00B3E6', 
 		  '#2196F3', '#00796B', '#4CAF50', '#CDDC39', '#3F51B5'];
 
 function Movies(props: any){
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     useEffect(() => {
         moviesApi.then((response: any) => {
-
-            
-
             setUniqueMoviesCategories(response);
             props.setMovies(response);
-
+            setIsLoading(false);
         }).catch((error) => {
             alert("There was an error fetching the data from the server. Please try again in a while.")
         })
@@ -141,11 +140,38 @@ function Movies(props: any){
         return "/movies/" + (parseInt(pageNumber) + 1);
     }
 
+    function getMultiSelectCategories(){
+        if(props.movies.length){
+            return (
+                <div className="multi-select-container">
+                    <Select categories={props.categories}></Select>
+                </div>
+            );
+        }
+    }
+
+    function getDefaultEmpyListMessage(){
+        if(!props.movies.length && !isLoading){
+            return(
+                <h4>
+                    The demonstration has finished, hope you like it.
+                </h4>
+            )
+        }
+    }
+
     return (
         <>
-            <div className="multi-select-container">
-                <Select categories={props.categories}></Select>
-            </div>
+            {
+                isLoading &&
+                <h4>Loading...</h4>
+            }
+            {
+                getDefaultEmpyListMessage()
+            }
+            {
+                getMultiSelectCategories()
+            }
             <section className="movies-list">
                 {
                     paginateMovies().map((movie: MovieType) => {
