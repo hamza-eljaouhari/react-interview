@@ -3,3 +3,16 @@
     justify-content: space-around;
     flex-wrap: wrap;
 }
+
+.button{
+    margin: 30px;
+}
+
+.previous{
+    text-align: left;
+}
+
+
+.next{
+    text-align: right;
+}
