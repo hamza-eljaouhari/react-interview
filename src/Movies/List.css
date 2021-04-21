@@ -8,7 +8,7 @@
     background-color: #2F4F4F;
     padding: 5px 10px;
     color: white;
-    
+
 }
 
 .previous{
@@ -18,4 +18,8 @@
 
 .next{
     text-align: right;
+}
+
+.multi-select-container{
+    margin-left: auto;
 }

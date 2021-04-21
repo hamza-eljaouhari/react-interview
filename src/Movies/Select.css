@@ -1,0 +1,15 @@
+form{
+    display: table;
+    margin-right: 30px;
+    margin-left: auto;
+}
+
+.control-form {
+    display: table-cell;
+}
+
+label, select {
+    vertical-align: middle;
+    margin: 5px;
+}
+

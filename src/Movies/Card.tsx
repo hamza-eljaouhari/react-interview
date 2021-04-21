@@ -6,9 +6,9 @@ import { MdThumbDown } from 'react-icons/md';
 
 const iconSize = 16;
 
-function Card(props: MovieType){
-    const { id, title, category, likes, dislikes } = props;
-
+function Card(props: any){
+    const { id, title, category, categoryColor, likes, dislikes } = props;
+    console.log(categoryColor)
     return (
         <article className="movie-card">
             <header>
@@ -19,7 +19,7 @@ function Card(props: MovieType){
 
             <hr/>
 
-            <span className="movie-category">{category}</span>
+            <span className="movie-category" style={{backgroundColor: categoryColor}}>{category}</span>
 
             <hr/>
 

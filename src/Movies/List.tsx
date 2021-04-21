@@ -2,22 +2,41 @@ import { useEffect, useState } from "react";
 import moviesApi from "../movies";
 import Card from "./Card";
 import MovieType from "../types/movie";
-import "./List.css";
-
+import Select from "./Select";
 import {
     Link,
     withRouter
 } from "react-router-dom";
 
+import "./List.css";
+import { setMoviesCategories } from "../redux/reducers/movies/actions";
+
 const DEFAULT_PER_PAGE = 4;
+
+
+var colorArray = ['#EF5350', '#EC407A', '#AB47BC', '#673AB7', '#00B3E6', 
+		  '#2196F3', '#00796B', '#4CAF50', '#CDDC39', '#3F51B5'];
+
 
 function Movies(props: any){
 
     const [movies, setMovies] = useState<any>([])
+    const [moviesCategories, setMoviesCategories] = useState<any>([])
 
     useEffect(() => {
         moviesApi.then((response: any) => {
+
+            var uniqueCategories: any = [];
+
+            response.forEach((movie: MovieType) => {
+                if(!uniqueCategories.includes(movie.category)){
+                    uniqueCategories.push(movie.category)
+                }
+            })
+
+            setMoviesCategories(uniqueCategories);
             setMovies(response);
+
         }).catch((error) => {
             alert("There was an error fetching the data from the server. Please try again in a while.")
         })
@@ -56,7 +75,6 @@ function Movies(props: any){
 
         return "/movies/" + (parseInt(pageNumber) - 1);
     }
-
     
     function nextPagePath() : string {
         const { pageNumber } = props.match.params;
@@ -66,6 +84,9 @@ function Movies(props: any){
 
     return (
         <>
+            <div className="multi-select-container">
+                <Select categories={moviesCategories }></Select>
+            </div>
             <section className="movies-list">
                 {
                     paginateMovies().map((movie: MovieType) => {
@@ -74,6 +95,7 @@ function Movies(props: any){
                             id={movie.id}
                             title={movie.title}
                             category={movie.category}
+                            categoryColor={colorArray[moviesCategories.indexOf(movie.category)]}
                             likes={movie.likes}
                             dislikes={movie.dislikes}
                         ></Card>
