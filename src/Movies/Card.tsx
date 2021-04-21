@@ -9,7 +9,18 @@ const iconSize = 16;
 
 function Card(props: any){
 
-    const { id, title, category, categoryColor, likes, dislikes, deleteItem, like, dislike} = props;
+    const { 
+        id, 
+        title, 
+        category, 
+        categoryColor, 
+        likes, 
+        dislikes, 
+        deleteItem, 
+        like, 
+        dislike, 
+        setFilter
+    } = props;
 
     return (
         <article className="movie-card">

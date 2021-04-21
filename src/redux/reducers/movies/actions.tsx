@@ -1,6 +1,7 @@
 import { 
     SET_MOVIES,
-    SET_MOVIES_CATEGORIES
+    SET_MOVIES_CATEGORIES,
+    SET_CATEGORY_FILTERS
    } from "../../action-types";
   
 import MovieType from "../../../types/movie";
@@ -14,4 +15,9 @@ export const setMovies = (movies: MovieType[]) => ({
 export const setMoviesCategories = (categories: string[]) => ({
     type: SET_MOVIES_CATEGORIES,
     payload: { categories }
+});
+
+export const setCategoryFilter = (filters: string[]) => ({
+    type: SET_CATEGORY_FILTERS,
+    payload: { filters }
 });

@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux'
 
 import "./List.css";
-import { setMoviesCategories, setMovies} from "../redux/reducers/movies/actions";
+import { setMoviesCategories, setMovies, setCategoryFilter} from "../redux/reducers/movies/actions";
 import movies from "../movies";
 
 const DEFAULT_PER_PAGE = 4;
@@ -93,14 +93,16 @@ function Movies(props: any){
     function paginateMovies() : MovieType[] {
         const { pageNumber } = props.match.params;
 
-        var moviesPage = [...props.movies]
+        var moviesPage = [];
+
+        moviesPage = [...props.filteredMovies]
         
         return moviesPage.splice(DEFAULT_PER_PAGE * (parseInt(pageNumber)  - 1), DEFAULT_PER_PAGE)
     }
 
     function hasPreviousPage() : boolean {
 
-        if(props.movies.length < DEFAULT_PER_PAGE){
+        if(props.filteredMovies.length < DEFAULT_PER_PAGE){
             return false;
         }
 
@@ -114,7 +116,7 @@ function Movies(props: any){
     }
 
     function hasNextPage() : boolean {
-        if(props.movies.length < DEFAULT_PER_PAGE){
+        if(props.filteredMovies.length < DEFAULT_PER_PAGE){
             return false;
         }
 
@@ -144,7 +146,10 @@ function Movies(props: any){
         if(props.movies.length){
             return (
                 <div className="multi-select-container">
-                    <Select categories={props.categories}></Select>
+                    <Select 
+                        categories={props.categories}
+                        selectFilters={selectFilters}
+                        ></Select>
                 </div>
             );
         }
@@ -158,6 +163,25 @@ function Movies(props: any){
                 </h4>
             )
         }
+    }
+
+    function selectFilters(event: React.ChangeEvent<HTMLSelectElement>){
+        var selected = []
+        const options = event.currentTarget.options
+         
+        for(let i = 0; i < options.length; i++){
+            if(options[i].selected){
+                selected.push(options[i].innerText);
+            }
+        }
+
+        const {pageNumber} = props.match.params;
+
+        if(parseInt(pageNumber) !== 1){
+            props.history.push("/movies/1");
+        }
+
+        props.setFilters(selected)
     }
 
     return (
@@ -210,15 +234,20 @@ function Movies(props: any){
 
 const mapStateToProps = (state: any) => {
     return {
+        filteredMovies: state.moviesReducer.movies.filter((m: MovieType) => {
+            return state.moviesReducer.filters.includes("All") || state.moviesReducer.filters.includes(m.category);
+        }),
         movies: state.moviesReducer.movies,
-        categories: state.moviesReducer.categories
+        categories: state.moviesReducer.categories,
+        filters: state.moviesReducer.filters
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         setMovies: (movies: MovieType[]) => dispatch(setMovies(movies)),
-        setCategories: (categories: string[]) => dispatch(setMoviesCategories(categories))
+        setCategories: (categories: string[]) => dispatch(setMoviesCategories(categories)),
+        setFilters: (filters: string[]) => dispatch(setCategoryFilter(filters))
     }   
 }
 

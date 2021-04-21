@@ -4,7 +4,7 @@ import MovieType from "../types/movie";
 import "./Select.css";
 
 function Select(props: any){
-    const {filterMovies} = props;
+    const {selectFilters} = props;
     return(
         <form>
             <div className="control-form">
@@ -14,8 +14,8 @@ function Select(props: any){
                     name="categories" 
                     id="categories" 
                     multiple
-                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) => filterMovies(event.target.value)} >
-                    <option key="all" value="all">All</option>
+                    onChange={selectFilters} >
+                    <option key="All" value="All">All</option>
                     {
                         props.categories.map((category: string) => {
                             return <option key={category} value={category}>{ category }</option>
